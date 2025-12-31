@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Happy New Year 2026 🎆</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: black;
+            overflow: hidden;
+            color: white;
+            text-align: center;
+        }
+        
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            top: 15vh;
+            padding: 20px;
+        }
+        
+        .glow {
+            font-size: 3rem;
+            text-shadow: 0 0 10px #ff00ff, 0 0 20px #00ffff, 0 0 40px #ffcc00;
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #ff00ff;
+            }
+            to {
+                text-shadow: 0 0 30px #00ffff;
+            }
+        }
+        
+        .name {
+            font-size: 1.8rem;
+            margin: 15px 0;
+        }
+        
+        .name span {
+            color: #ffcc00;
+        }
+        
+        .wish {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: auto;
+            line-height: 1.6;
+        }
+        
+        #countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        #countdown div {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 90px;
+        }
+        
+        #countdown span {
+            display: block;
+            font-size: 1.8rem;
+            color: #ffcc00;
+        }
+        
+        button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="fireworks"></canvas>
+
+    <div class="container">
+        <h1 class="glow">🎆 Happy New Year 2026 🎆</h1>
+        <p class="name">Dear MY LOVE🩷 Ruhi Bachcha<span></span> 💖</p>
+        <p class="wish">
+            May this New Year bring happiness, success, peace, good health and endless opportunities 🌟
+        </p>
+
+        <div id="countdown">
+            <div><span id="days">00</span>Days</div>
+            <div><span id="hours">00</span>Hours</div>
+            <div><span id="minutes">00</span>Minutes</div>
+            <div><span id="seconds">00</span>Seconds</div>
+        </div>
+
+        <button onclick="playMusic()">🎵 Play Celebration</button>
+    </div>
+
+    <audio id="music" loop>
+  <source src="https://www.soundjay.com/human/cheering-01.mp3" type="audio/mpeg">
+</audio>
+
+    <script>
+        /* Countdown */
+        const newYear = new Date("January 1, 2026 00:00:00").getTime();
+
+        setInterval(() => {
+            const now = new Date().getTime();
+            const diff = newYear - now;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            document.getElementById("days").innerText = days;
+            document.getElementById("hours").innerText = hours;
+            document.getElementById("minutes").innerText = minutes;
+            document.getElementById("seconds").innerText = seconds;
+        }, 1000);
+
+        /* Music */
+        function playMusic() {
+            document.getElementById("music").play();
+        }
+
+        /* Fireworks */
+        const canvas = document.getElementById("fireworks");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let fireworks = [];
+
+        function Firework(x, y) {
+            this.x = x;
+            this.y = y;
+            this.radius = Math.random() * 3 + 2;
+            this.color = `hsl(${Math.random()*360},100%,50%)`;
+            this.life = 100;
+        }
+
+        function createFireworks() {
+            for (let i = 0; i < 40; i++) {
+                fireworks.push(new Firework(
+                    Math.random() * canvas.width,
+                    Math.random() * canvas.height
+                ));
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            fireworks.forEach((f, i) => {
+                ctx.beginPath();
+                ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
+                ctx.fillStyle = f.color;
+                ctx.fill();
+                f.life--;
+                if (f.life <= 0) fireworks.splice(i, 1);
+            });
+            requestAnimationFrame(animate);
+        }
+
+        setInterval(createFireworks, 700);
+        animate();
+
+        window.onresize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        };
+    </script>
+
+</body>
+
+</html>
